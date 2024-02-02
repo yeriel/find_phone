@@ -162,4 +162,4 @@ cython_debug/
 data/
 find_phone_data/
 
-weights/best.pth
+weights/

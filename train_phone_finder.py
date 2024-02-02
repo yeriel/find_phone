@@ -1,24 +1,28 @@
 import torch
 import random
+import numpy as np
 import torch.optim as optim
-import torchvision.transforms as T
+import matplotlib.pyplot as plt
 
 from utils.trainer import train
 from utils.models.model import NET
 from utils.dataset import DatasetPhone
-from utils.tools import parse_command_line_args, check_folder_contents
+from utils.tools import parse_command_line_args, check_folder_contents, count_module_parameters
 
+import torchvision.transforms as T
 from torch.utils.data import DataLoader
 from torch.utils.data import random_split
+from torch.optim.lr_scheduler import OneCycleLR
+
 
 EPOCHS = 10
 BATCH_SIZE = 2
 VAL_SPLIT = 0.2
-LR = 3e-4
+LR = 2e-4
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def get_datloaders(path):
+def get_dataloaders(path):
     data_transform = T.Compose([
         T.RandomApply([
             T.Lambda(lambda x: x + random.uniform(0.1, 0.4)
@@ -44,6 +48,18 @@ def get_datloaders(path):
     return train_dataloader, val_dataloader
 
 
+def plot(train, val, name):
+    plt.figure(figsize=(10, 5))
+    plt.plot(np.arange(len(train)), train, label=f'Train {name}')
+    plt.plot(np.arange(len(val)), val, label=f'Validation {name}')
+    plt.title(f'Training and Validation {name}')
+    plt.xlabel('Epochs')
+    plt.ylabel(f'{name}')
+    plt.legend()
+    plt.savefig(f'plots/{name}_plot.png')
+    plt.clf()
+
+
 def main():
     args = parse_command_line_args()
 
@@ -52,17 +68,25 @@ def main():
     if check_folder_contents(data_folder_path):
 
         model = NET(channels_in=3, channels=32, num_classes=2)
+        print(f'# Parameters {count_module_parameters(model)}')
         model.to(DEVICE)
 
-        optimizer = optim.Adam(model.parameters(), lr=LR)
-        train_dataloader, val_dataloader = get_datloaders(data_folder_path)
+        train_dataloader, val_dataloader = get_dataloaders(data_folder_path)
 
-        train(EPOCHS,
-              model,
-              train_dataloader,
-              val_dataloader,
-              optimizer,
-              DEVICE)
+        optimizer = optim.Adam(model.parameters(), lr=LR)
+        scheduler = OneCycleLR(optimizer, max_lr=LR,
+                               total_steps=len(train_dataloader)*EPOCHS)
+
+        history_train_loss, history_train_mae, history_val_loss, history_val_mae = train(EPOCHS,
+                                                                                         model,
+                                                                                         train_dataloader,
+                                                                                         val_dataloader,
+                                                                                         optimizer,
+                                                                                         DEVICE,
+                                                                                         scheduler=scheduler)
+
+        plot(history_train_loss, history_val_loss, name='Loss')
+        plot(history_train_mae, history_val_mae, name='MAE')
 
     else:
         print('Please provide a valid data_folder that meets the required format for training.')
