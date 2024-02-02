@@ -1,6 +1,5 @@
 import torch
 from tqdm import tqdm
-from torch.cuda.amp import GradScaler, autocast
 
 # Función para calcular el MAE
 def calculate_mae(predictions, targets):
