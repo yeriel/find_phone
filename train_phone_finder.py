@@ -18,7 +18,7 @@ from torch.optim.lr_scheduler import OneCycleLR
 EPOCHS = 10
 BATCH_SIZE = 2
 VAL_SPLIT = 0.2
-LR = 2e-4
+LR = 3e-4
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
@@ -32,7 +32,7 @@ def get_dataloaders(path):
         ], p=0.5)
     ])
 
-    dataset = DatasetPhone(path, data_transform)
+    dataset = DatasetPhone(path)
     dataset_size = len(dataset)
 
     val_size = int(VAL_SPLIT * dataset_size)
@@ -77,16 +77,18 @@ def main():
         scheduler = OneCycleLR(optimizer, max_lr=LR,
                                total_steps=len(train_dataloader)*EPOCHS)
 
-        history_train_loss, history_train_mae, history_val_loss, history_val_mae = train(EPOCHS,
+        history_train_loss, history_train_mae, history_train_mse, history_val_loss, history_val_mae, history_val_mse = train(EPOCHS,
                                                                                          model,
                                                                                          train_dataloader,
                                                                                          val_dataloader,
                                                                                          optimizer,
                                                                                          DEVICE,
-                                                                                         scheduler=scheduler)
+                                                                                         scheduler=scheduler,
+                                                                                         save_every_n_epochs=1)
 
         plot(history_train_loss, history_val_loss, name='Loss')
         plot(history_train_mae, history_val_mae, name='MAE')
+        plot(history_train_mse, history_val_mse, name='MSE')
 
     else:
         print('Please provide a valid data_folder that meets the required format for training.')
