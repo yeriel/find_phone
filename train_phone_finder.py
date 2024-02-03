@@ -1,5 +1,4 @@
 import torch
-import random
 import numpy as np
 import torch.optim as optim
 import matplotlib.pyplot as plt
@@ -15,7 +14,7 @@ from torch.utils.data import random_split
 from torch.optim.lr_scheduler import OneCycleLR
 
 
-EPOCHS = 10
+EPOCHS = 20
 BATCH_SIZE = 2
 VAL_SPLIT = 0.2
 LR = 3e-4
@@ -25,14 +24,14 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def get_dataloaders(path):
     data_transform = T.Compose([
         T.RandomApply([
-            T.Lambda(lambda x: x + random.uniform(0.1, 0.4)
-                     * torch.randn_like(x)),
+            T.Lambda(lambda x: x + 0.1 * torch.randn_like(x)),
             T.ColorJitter(saturation=0.2, hue=0.2),
-            T.ColorJitter(brightness=0.2, contrast=0.2)
-        ], p=0.5)
+            T.ColorJitter(brightness=0.2, contrast=0.2),
+            T.RandomErasing()
+        ], p=0.8)
     ])
 
-    dataset = DatasetPhone(path)
+    dataset = DatasetPhone(path, transform=data_transform)
     dataset_size = len(dataset)
 
     val_size = int(VAL_SPLIT * dataset_size)
@@ -50,8 +49,8 @@ def get_dataloaders(path):
 
 def plot(train, val, name):
     plt.figure(figsize=(10, 5))
-    plt.plot(np.arange(len(train)), train, label=f'Train {name}')
-    plt.plot(np.arange(len(val)), val, label=f'Validation {name}')
+    plt.plot(np.arange(len(train))+1, train, label=f'Train {name}')
+    plt.plot(np.arange(len(val))+1, val, label=f'Validation {name}')
     plt.title(f'Training and Validation {name}')
     plt.xlabel('Epochs')
     plt.ylabel(f'{name}')
@@ -83,8 +82,7 @@ def main():
                                                                                          val_dataloader,
                                                                                          optimizer,
                                                                                          DEVICE,
-                                                                                         scheduler=scheduler,
-                                                                                         save_every_n_epochs=1)
+                                                                                         scheduler=scheduler)
 
         plot(history_train_loss, history_val_loss, name='Loss')
         plot(history_train_mae, history_val_mae, name='MAE')
