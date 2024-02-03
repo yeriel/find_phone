@@ -4,7 +4,7 @@ This project involves the implementation of a prototype visual object detection 
 
 ## Getting Started
 
-These instructions will provide you with a working copy of the project on your local machine for development and testing purposes. Refer to the [journal]() section for notes on how the project is implemented.
+These instructions will provide you with a working copy of the project on your local machine for development and testing purposes. Refer to the [journal](https://github.com/yeriel/find_phone/blob/main/journal.md) section for notes on how the project is implemented.
 
 ### Prerequisites
 
