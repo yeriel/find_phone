@@ -19,11 +19,11 @@ class NET(nn.Module):
         self.down_conv2 = DownSampling(2*channels, 4*channels)
 
         self.conv3 = DoubleResnet(4*channels)
-        self.drop3 = nn.Dropout2d(0.2)
+        self.drop3 = nn.Dropout2d(0.4)
         self.down_conv3 = DownSampling(4*channels, 8*channels)
 
         self.conv4 = DoubleResnet(8*channels)
-        self.drop4 = nn.Dropout2d(0.2)
+        self.drop4 = nn.Dropout2d(0.4)
         self.down_conv4 = DownSampling(8*channels, 16*channels)
 
         self.global_avg_pooling = nn.AdaptiveAvgPool2d(1)
