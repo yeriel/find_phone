@@ -25,10 +25,11 @@ def get_dataloaders(path):
     data_transform = T.Compose([
         T.RandomApply([
             T.Lambda(lambda x: x + 0.1 * torch.randn_like(x)),
-            T.ColorJitter(saturation=0.2, hue=0.2),
             T.ColorJitter(brightness=0.2, contrast=0.2),
+            T.ColorJitter(saturation=0.2, hue=0.2),
+            T.ElasticTransform(alpha=250.0),
             T.RandomErasing()
-        ], p=0.8)
+        ], p=0.5)
     ])
 
     dataset = DatasetPhone(path, transform=data_transform)
