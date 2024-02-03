@@ -61,6 +61,6 @@ After defining the neural network architecture, the next step is the practical i
 
 Once the dataset is ready, the training loop is implemented. It begins with encoding the neural network, using the Mean Squared Error (MSE) loss function for initial tests of the forward pass. During training loop evaluations, it becomes evident that the regularization provided by Shake-Shake is insufficient. Consequently, the decision is made to introduce dropout to the neural network to improve model generalization.
 
-Additionally, a function is introduced to search for the optimal value of the learning rate (lr_max) for the scheduler. This search is crucial for effectively adjusting the learning rate during training, optimizing the model's convergence. Furthermore, a scheduler, such as [OneCycleLR](http://arxiv.org/abs/1803.09820.), is implemented to dynamically adjust the learning rate during the training process, enhancing convergence speed and stability.
+Additionally, a function is introduced to search for the optimal value of the learning rate (lr_max) for the scheduler. This search is crucial for effectively adjusting the learning rate during training, optimizing the model's convergence. Furthermore, a scheduler, such as [OneCycleLR](https://arxiv.org/abs/1803.09820), is implemented to dynamically adjust the learning rate during the training process, enhancing convergence speed and stability.
 
 All implementations can be reviewed in the available code, with the model residing within utils.models.model, while the rest is organized within the utils directory.
