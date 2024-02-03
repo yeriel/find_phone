@@ -1,6 +1,7 @@
 import torch
 from tqdm import tqdm
 
+
 class EarlyStopping:
     def __init__(self, patience=5, delta=0, mode='min', save_path='best.pth'):
         self.patience = patience
@@ -46,8 +47,9 @@ def train(epochs, model, train_dataloader, val_dataloader, optimizer, device, sc
     history_val_mae = []
     history_val_mse = []
 
-    early_stopping = EarlyStopping(patience=5, delta=0.001, mode='min', save_path='weights/best.pth')
-    
+    early_stopping = EarlyStopping(
+        patience=5, delta=0.001, mode='min', save_path='weights/best.pth')
+
     # Bucle de entrenamiento y validación
     for epoch in range(epochs):
         # Bucle de entrenamiento
@@ -105,15 +107,16 @@ def train(epochs, model, train_dataloader, val_dataloader, optimizer, device, sc
         # Guardar el modelo cada n epochs y el último modelo entrenado
         if epoch % save_every_n_epochs == 0 or epoch == epochs - 1:
             # Guardar el modelo
-            torch.save(model.state_dict(), f'weights/model_epoch_{epoch+1}.pth')
+            torch.save(model.state_dict(),
+                       f'weights/model_epoch_{epoch+1}.pth')
 
         # Imprimir métricas
         print(f"Epoch {epoch + 1}/{epochs} -> "
               f"Train Loss: {average_loss_train:.4f}, Train MAE: {average_mae_train:.4f}, Train MSE: {average_mse_train:.4f}, "
               f"Val Loss: {average_loss_val:.4f}, Val MAE: {average_mae_val:.4f}, Val MSE: {average_mse_val:.4f}")
-        
+
         if early_stopping(average_loss_val, model):
             print("Early stopping triggered!")
-            break 
+            break
 
     return history_train_loss, history_train_mae, history_train_mse, history_val_loss, history_val_mae, history_val_mse

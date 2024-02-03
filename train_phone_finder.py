@@ -78,12 +78,12 @@ def main():
                                total_steps=len(train_dataloader)*EPOCHS)
 
         history_train_loss, history_train_mae, history_train_mse, history_val_loss, history_val_mae, history_val_mse = train(EPOCHS,
-                                                                                         model,
-                                                                                         train_dataloader,
-                                                                                         val_dataloader,
-                                                                                         optimizer,
-                                                                                         DEVICE,
-                                                                                         scheduler=scheduler)
+                                                                                                                             model,
+                                                                                                                             train_dataloader,
+                                                                                                                             val_dataloader,
+                                                                                                                             optimizer,
+                                                                                                                             DEVICE,
+                                                                                                                             scheduler=scheduler)
 
         plot(history_train_loss, history_val_loss, name='Loss')
         plot(history_train_mae, history_val_mae, name='MAE')
