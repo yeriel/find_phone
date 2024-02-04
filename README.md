@@ -104,3 +104,19 @@ the output of the script corresponds to the (x, y) coordinates of the phone loca
 └── journal.md              # Notes
 └── README.md               
 ```
+## To DO
+
+To-Do List for Future Steps:
+   
+- [ ] Implement Data Augmentation Affecting Labels
+
+   - [ ] Apply rotations.
+   - [ ] Apply vertical flipping (`flipud`).
+   - [ ] Apply horizontal flipping (`fliplr`).
+   
+- [ ] Implement Neural Network for Backbone and DNN
+- [ ] Develop a Script to Export the Model to ONNX Format    
+- [ ] Create a Dockerfile for Production Deployment   
+   
+Completing these tasks will enhance the model, prepare it for practical implementation, and streamline the deployment process in production.
+

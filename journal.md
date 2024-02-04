@@ -64,3 +64,11 @@ Once the dataset is ready, the training loop is implemented. It begins with enco
 Additionally, a function is introduced to search for the optimal value of the learning rate (lr_max) for the scheduler. This search is crucial for effectively adjusting the learning rate during training, optimizing the model's convergence. Furthermore, a scheduler, such as [OneCycleLR](https://arxiv.org/abs/1803.09820), is implemented to dynamically adjust the learning rate during the training process, enhancing convergence speed and stability.
 
 All implementations can be reviewed in the available code, with the model residing within utils.models.model, while the rest is organized within the utils directory.
+
+## Session IV - Future Steps
+
+As pending tasks, it is necessary to implement data augmentation that affects the labels. This involves applying rotations, vertical flipping (flipud), horizontal flipping (fliplr), among other transformations, to further expand the dataset. It is important to consider that the coordinates are normalized. Therefore, to apply these transformations to the labels, it is necessary to translate the origin of the image from the upper-left corner to the center (0.5, 0.5). After applying the transformation, the origin should be returned to its initial position.
+
+Additionally, the neural network corresponding to the backbone and DNN needs to be implemented. This process is not complex; only the last layers of the current network need to be changed to allow performance comparisons between both architectures. It is worth noting that this architecture is limited to the inputs of the network.
+
+Another pending step is to create a script that allows exporting the model to ONNX format for subsequent deployment in production. Furthermore, a Dockerfile needs to be developed to streamline the transition of the model to production efficiently.
