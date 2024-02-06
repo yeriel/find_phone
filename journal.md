@@ -67,8 +67,10 @@ All implementations can be reviewed in the available code, with the model residi
 
 ## Session IV - Future Steps
 
+Due to the inadequate results of the chosen approach, as a next step, I believe that implementing the initial approach (Unet) is the alternative to pursue with the project. Carrying out a second iteration, which I was unable to implement due to time constraints before the specified deadline, is what I think the solution should evolve into.
 As pending tasks, it is necessary to implement data augmentation that affects the labels. This involves applying rotations, vertical flipping (flipud), horizontal flipping (fliplr), among other transformations, to further expand the dataset. It is important to consider that the coordinates are normalized. Therefore, to apply these transformations to the labels, it is necessary to translate the origin of the image from the upper-left corner to the center (0.5, 0.5). After applying the transformation, the origin should be returned to its initial position.
 
 Additionally, the neural network corresponding to the backbone and DNN needs to be implemented. This process is not complex; only the last layers of the current network need to be changed to allow performance comparisons between both architectures. It is worth noting that this architecture is limited to the inputs of the network.
 
 Another pending step is to create a script that allows exporting the model to ONNX format for subsequent deployment in production. Furthermore, a Dockerfile needs to be developed to streamline the transition of the model to production efficiently.
+
